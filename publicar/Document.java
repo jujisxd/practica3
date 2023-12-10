@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package practica3.publicar;
+//package practica3.publicar;
 
 import java.util.ArrayList;
 
@@ -27,6 +27,7 @@ public class Document {
     public Document(int id, String category) {
         this.id = id;
         this.category = category;
+        this.general = new ArrayList<>();
     }
 
     /**

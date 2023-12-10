@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package practica3.publicar;
+//package practica3.publicar;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -104,11 +104,11 @@ public class IndexTree {
      */
     public void insertCompendium(Compendium com) {
         ArrayList<String> dictionary = com.getDictionary(); // Copia del diccionario
-        ArrayList<Document> docs = com.getDocuments(); // Documentos del compendium
+        ArrayList<Document> docs = com.getDocuments(); // Copia de los docuementos
 
+        //Recorro el array de dictinary
         for (String palabra : dictionary) {
             String lowerCasePalabra = palabra.toLowerCase(); //Paso la palabra a minúscula
-
             if (tree.containsKey(lowerCasePalabra)) { //Verifíco si la palabra está en el árbol
 
                 // Si la palabra ya existe en el árbol, obtenemos el TreeSet asociado a esa palabra
@@ -268,26 +268,36 @@ public class IndexTree {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-
+    
         // Iterar sobre cada palabra en el árbol
+        int totalKeys = tree.keySet().size();
+        int currentKeyIndex = 0;
+    
         for (String palabra : tree.keySet()) {
-            sb.append(palabra).append(" *"); // Agregar la clave seguida de un asterisco
-
+            currentKeyIndex++;
+    
+            sb.append(palabra).append(" * "); // Agregar la clave seguida de un asterisco
+    
             TreeSet<Integer> idSet = tree.get(palabra);
-
+    
             if (idSet != null && !idSet.isEmpty()) {
                 // Si el conjunto de identificadores no está vacío, agregar los identificadores
                 for (int id : idSet) {
-                    sb.append(" ").append("- ").append(id); // Agregar cada identificador precedido por un guión
+                    sb.append(id).append(" - ");
                 }
-            } else {
-                sb.append(" "); // Si no hay identificadores, agregar un espacio en blanco
+                // Eliminar el último separador ("-") y el espacio en blanco
+                sb.delete(sb.length() - 3, sb.length());
             }
-
-            sb.append("\n"); // Agregar un cambio de línea al final de cada entrada
+    
+            // Verificar si es la última palabra en el árbol
+            if (currentKeyIndex < totalKeys) {
+                sb.append("\n"); // Agregar un cambio de línea al final de cada entrada excepto la última
+            }
         }
-
+    
         return sb.toString();
     }
+    
+    
 
 }

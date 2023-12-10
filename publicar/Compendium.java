@@ -2,12 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package practica3.publicar;
+//package practica3.publicar;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -24,14 +25,11 @@ public class Compendium {
     /**
      * Método constructor, inicializa valores
      */
-    public Compendium() {
-        for (Document doc : documents) {
-            doc = new Document(doc.getId(), doc.getCategory());
-        }
-        for (int i = 0; i < dictionary.size(); i++) {
-            dictionary.set(i, "");
-        }
-    }
+public Compendium() {
+    documents = new ArrayList<>();
+    dictionary = new ArrayList<>();
+}
+
 
     /**
      * Método para mostrar los datos de compendium REVISAR
@@ -93,7 +91,7 @@ public class Compendium {
                         // Elimina los espacios en blanco alrededor de la palabra
                         word = word.trim();
                         // Elimina los signos de puntuación
-                        word = word.replaceAll("[,:.()\\[\\];]", "");
+                        word = word.replaceAll("[,:.()?\\[\\];]", "");
                         if (esDoc) {
                             int ultPos = documents.size() - 1;
                             documents.get(ultPos).addCard(word);
