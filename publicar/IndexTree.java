@@ -92,35 +92,39 @@ public class IndexTree {
 
     /**
      * Método que recorre el diccionario del compendium pasado por parametro.
-     * Para cada palabra del diccionario pueden ocurrir dos cosas - si la
-     * palabra ya existe en el árbol, hay que añadir al nodo correspondiente los
+     * Para cada palabra del diccionario pueden ocurrir dos cosas 
+     * 
+     * - si la palabra ya existe en el árbol, hay que añadir al nodo correspondiente los
      * documentos del objeto pasado por parámetro en los que aparece (sin
-     * repetición de identificadores de documentos). - si la palabra no estaba
-     * en el árbol, se añade un nuevo nodo al árbol con la palabra y todos los
-     * documentos del objeto pasado por parámetro en los que aparece (si no
+     * repetición de identificadores de documentos). 
+     * 
+     * - si la palabra no estaba en el árbol, se añade un nuevo nodo al árbol con la palabra 
+     * y todos los documentos del objeto pasado por parámetro en los que aparece (si no
      * aparece en ningún documento, se añade con un valor asociado vacío).
      *
      * @param com
      */
     public void insertCompendium(Compendium com) {
         ArrayList<String> dictionary = com.getDictionary(); // Copia del diccionario
-        ArrayList<Document> docs = com.getDocuments(); // Copia de los docuementos
-
-        //Recorro el array de dictinary
+        ArrayList<Document> docs = com.getDocuments(); // Copia de los documentos
+    
+        // Recorro el array de dictionary
         for (String palabra : dictionary) {
-            String lowerCasePalabra = palabra.toLowerCase(); //Paso la palabra a minúscula
-            if (tree.containsKey(lowerCasePalabra)) { //Verifíco si la palabra está en el árbol
-
+            //El error está en esta comparación , que nunca entra aqui AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            //Creo que toca añadir algo para ver si el arbol está vacío)
+            System.out.println(tree + "Sali del print");
+            if (tree.containsKey(palabra)) { // Verifico si la palabra está en el árbol
                 // Si la palabra ya existe en el árbol, obtenemos el TreeSet asociado a esa palabra
-                TreeSet<Integer> idSet = tree.get(lowerCasePalabra);
-
+                TreeSet<Integer> idSet = tree.get(palabra);
+    
                 // Agregamos los identificadores de documentos al TreeSet asociado a esa palabra
                 for (Document doc : docs) {
-                    int docId = doc.getId(); // Obtener el identificador del documento
-                    if (!idSet.contains(docId)) {
-                        idSet.add(docId);
-                    }
+                    if (!idSet.contains(doc.getId())) {
+                        idSet.add(doc.getId());                        
+                    }                
                 }
+                System.out.println("Llegué aqui");
+                tree.put(palabra, idSet); //recien lo añadi
             } else {
                 // Si la palabra no está en el árbol, creamos un nuevo nodo con la palabra
                 // y añadimos los documentos del compendium si existen
@@ -128,10 +132,11 @@ public class IndexTree {
                 for (Document doc : docs) {
                     newIdSet.add(doc.getId()); // Agregar el identificador del documento
                 }
-                tree.put(lowerCasePalabra, newIdSet);
+                tree.put(palabra, newIdSet); // Agregar la palabra y su conjunto de IDs al árbol
             }
         }
     }
+    
 
     /**
      * elimina del árbol el nodo que contiene la palabra que coincide con la
