@@ -69,7 +69,8 @@ public Compendium() {
      * @param cadena : nombre del fichero
      */
     public void readFile(String cadena) {
-        try (BufferedReader br = new BufferedReader(new FileReader(cadena))) {
+        try (
+            BufferedReader br = new BufferedReader(new FileReader(cadena))) {
             String linea;
             boolean esDoc = false;
             int id = 0;

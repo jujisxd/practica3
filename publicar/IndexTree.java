@@ -15,7 +15,7 @@ import java.util.TreeSet;
  */
 public class IndexTree {
 
-    //Variables
+    // Variables
     private TreeMap<String, TreeSet<Integer>> tree;
 
     /**
@@ -65,7 +65,7 @@ public class IndexTree {
      * parámetro.
      *
      * @param cadena La cadena asociada al nodo del árbol.
-     * @param id El identificador de documento a agregar.
+     * @param id     El identificador de documento a agregar.
      * @return true si lo agrega, falso en caso contrario.
      */
     public boolean insertId(String cadena, int id) {
@@ -92,51 +92,54 @@ public class IndexTree {
 
     /**
      * Método que recorre el diccionario del compendium pasado por parametro.
-     * Para cada palabra del diccionario pueden ocurrir dos cosas 
+     * Para cada palabra del diccionario pueden ocurrir dos cosas
      * 
-     * - si la palabra ya existe en el árbol, hay que añadir al nodo correspondiente los
+     * - si la palabra ya existe en el árbol, hay que añadir al nodo correspondiente
+     * los
      * documentos del objeto pasado por parámetro en los que aparece (sin
-     * repetición de identificadores de documentos). 
+     * repetición de identificadores de documentos).
      * 
-     * - si la palabra no estaba en el árbol, se añade un nuevo nodo al árbol con la palabra 
-     * y todos los documentos del objeto pasado por parámetro en los que aparece (si no
+     * - si la palabra no estaba en el árbol, se añade un nuevo nodo al árbol con la
+     * palabra
+     * y todos los documentos del objeto pasado por parámetro en los que aparece (si
+     * no
      * aparece en ningún documento, se añade con un valor asociado vacío).
      *
      * @param com
      */
     public void insertCompendium(Compendium com) {
         ArrayList<String> dictionary = com.getDictionary(); // Copia del diccionario
-        ArrayList<Document> docs = com.getDocuments(); // Copia de los documentos
-    
+
         // Recorro el array de dictionary
         for (String palabra : dictionary) {
-            //El error está en esta comparación , que nunca entra aqui AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-            //Creo que toca añadir algo para ver si el arbol está vacío)
-            System.out.println(tree + "Sali del print");
+
+            ArrayList<Integer> ids = com.search(palabra);
+            // El error está en esta comparación , que nunca entra aqui
+            // Creo que toca añadir algo para ver si el arbol está vacío)
             if (tree.containsKey(palabra)) { // Verifico si la palabra está en el árbol
-                // Si la palabra ya existe en el árbol, obtenemos el TreeSet asociado a esa palabra
+                // Si la palabra ya existe en el árbol, obtenemos el TreeSet asociado a esa
+                // palabra
                 TreeSet<Integer> idSet = tree.get(palabra);
-    
+
                 // Agregamos los identificadores de documentos al TreeSet asociado a esa palabra
-                for (Document doc : docs) {
-                    if (!idSet.contains(doc.getId())) {
-                        idSet.add(doc.getId());                        
-                    }                
+
+                if (!idSet.contains(ids)) {
+                    idSet.addAll(ids);
                 }
+
                 System.out.println("Llegué aqui");
-                tree.put(palabra, idSet); //recien lo añadi
+                tree.put(palabra, idSet); // recien lo añadi
             } else {
                 // Si la palabra no está en el árbol, creamos un nuevo nodo con la palabra
                 // y añadimos los documentos del compendium si existen
                 TreeSet<Integer> newIdSet = new TreeSet<>();
-                for (Document doc : docs) {
-                    newIdSet.add(doc.getId()); // Agregar el identificador del documento
-                }
+
+                newIdSet.addAll(ids); // Agregar el identificador del documento
+
                 tree.put(palabra, newIdSet); // Agregar la palabra y su conjunto de IDs al árbol
             }
         }
     }
-    
 
     /**
      * elimina del árbol el nodo que contiene la palabra que coincide con la
@@ -163,7 +166,7 @@ public class IndexTree {
      *
      * @param id identificador que se va a buscar
      * @return un ArrayList con las palabras de las cuales se ha eliminado el id
-     * Si en el arbol no aparece el id pasado, devuelve null
+     *         Si en el arbol no aparece el id pasado, devuelve null
      */
     public ArrayList<String> erase(int id) {
         ArrayList<String> palabrasEliminadas = new ArrayList<>();
@@ -191,8 +194,8 @@ public class IndexTree {
     /**
      *
      * @param caracter inicial de palabra
-     * @return devuelve una copia del subconjunto del árbol6 formado por las
-     * palabras que comiencen por el carácter pasado por parámetro.
+     * @return devuelve una copia del subconjunto del árbol formado por las
+     *         palabras que comiencen por el carácter pasado por parámetro.
      */
     public TreeMap<String, TreeSet<Integer>> search(char caracter) {
         TreeMap<String, TreeSet<Integer>> retorno = new TreeMap<>();
@@ -202,7 +205,8 @@ public class IndexTree {
             if (palabra.charAt(0) == caracter) {
                 // Verificar si la palabra comienza con el carácter especificado
 
-                // Obtener el conjunto de identificadores asociados a esa palabra y agregarlo al subconjunto
+                // Obtener el conjunto de identificadores asociados a esa palabra y agregarlo al
+                // subconjunto
                 retorno.put(palabra, tree.get(palabra));
             }
         }
@@ -213,7 +217,7 @@ public class IndexTree {
      *
      * @param id identificador
      * @return palabras cuyos valores asociados se encuentren en id, si no
-     * aparece el id asociado, devuevle null
+     *         aparece el id asociado, devuevle null
      */
     public TreeSet<String> search(int id) {
         TreeSet<String> palabrasEnId = new TreeSet<>();
@@ -248,7 +252,7 @@ public class IndexTree {
      *
      * @param palabra que se va a buscar.
      * @return el treeset con los id de documentos en los que aparece la palabra
-     * por parámetro, en cualquiero otro caso, devuelve null
+     *         por parámetro, en cualquiero otro caso, devuelve null
      */
     public TreeSet<Integer> getDocuments(String palabra) {
         if (tree.containsKey(palabra)) {
@@ -261,30 +265,33 @@ public class IndexTree {
     /**
      *
      * @return el contenido del arbol en una cadena que debe tener el siguiente
-     * formato: • para cada nodo del árbol: clave del nodo, espacio en blanco,
-     * asterisco; • si el nodo tiene identificadores de documentos asociados:
-     * espacio en blanco, identificador. Si hay más de uno, para cada
-     * identificador, espacio en blanco, guión, identificador. Termina con
-     * cambio de línea sin espacio en blanco;
+     *         formato: • para cada nodo del árbol: clave del nodo, espacio en
+     *         blanco,
+     *         asterisco; • si el nodo tiene identificadores de documentos
+     *         asociados:
+     *         espacio en blanco, identificador. Si hay más de uno, para cada
+     *         identificador, espacio en blanco, guión, identificador. Termina con
+     *         cambio de línea sin espacio en blanco;
      *
-     * Ejemplo: war * 1 - 2 - 5 - 8 - 11 - 22 dog * 7 - 9 - 14 - 17 law * house
-     * * 1 - 2 - 7 - 11 - 13 ... music * 22
+     *         Ejemplo: war * 1 - 2 - 5 - 8 - 11 - 22 dog * 7 - 9 - 14 - 17 law *
+     *         house
+     *         * 1 - 2 - 7 - 11 - 13 ... music * 22
      */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-    
+
         // Iterar sobre cada palabra en el árbol
         int totalKeys = tree.keySet().size();
         int currentKeyIndex = 0;
-    
+
         for (String palabra : tree.keySet()) {
             currentKeyIndex++;
-    
+
             sb.append(palabra).append(" * "); // Agregar la clave seguida de un asterisco
-    
+
             TreeSet<Integer> idSet = tree.get(palabra);
-    
+
             if (idSet != null && !idSet.isEmpty()) {
                 // Si el conjunto de identificadores no está vacío, agregar los identificadores
                 for (int id : idSet) {
@@ -293,16 +300,14 @@ public class IndexTree {
                 // Eliminar el último separador ("-") y el espacio en blanco
                 sb.delete(sb.length() - 3, sb.length());
             }
-    
+
             // Verificar si es la última palabra en el árbol
             if (currentKeyIndex < totalKeys) {
                 sb.append("\n"); // Agregar un cambio de línea al final de cada entrada excepto la última
             }
         }
-    
+
         return sb.toString();
     }
-    
-    
 
 }

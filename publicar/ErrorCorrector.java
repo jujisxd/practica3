@@ -24,21 +24,28 @@ public class ErrorCorrector {
             boolean normalizar = false;
 
             //Evaluación del primer argumento
-            if (args[1].equals("W")) {
+            if (args[0].equals("W")) {
                 normalizar = false;
-            } else if (args[1].equals("N")) {
+            } else if (args[0].equals("N")) {
                 normalizar = true;
             } else {
-                System.out.println("ERROR EN EL ARG1");
+                System.out.println("Error: wrong arguments2");
             }
 
             //Asignación de nombres de ficheros
-            String nomFicheroDatos = args[2];
-            String nomFicheroTexto = args[3];
+            String nomFicheroDatos = args[1];
+            String nomFicheroTexto = args[2];
             
             String [] datos = leerArchivo(nomFicheroDatos);
             String [] texto = leerArchivo(nomFicheroTexto);
-                        
+            
+            //HACER UN COMPENDIUM Y EL READFILE CON EL PRIMER ARCHIVO
+            Compendium com = new Compendium();
+            com.readFile(nomFicheroDatos);
+            //LEERARCHIVO CON EL SEGUNDO      
+            
+
+            
         }
 
     }
