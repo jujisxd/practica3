@@ -1,8 +1,7 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ * TODO: debo hacer que el método de lectura tome como separador 
+ * los signos de puntuación que pide la práctica.
  */
-//package practica3.publicar;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
@@ -36,16 +35,16 @@ public class ErrorCorrector {
             String nomFicheroDatos = args[1];
             String nomFicheroTexto = args[2];
             
-            String [] datos = leerArchivo(nomFicheroDatos);
-            String [] texto = leerArchivo(nomFicheroTexto);
-            
             //HACER UN COMPENDIUM Y EL READFILE CON EL PRIMER ARCHIVO
             Compendium com = new Compendium();
             com.readFile(nomFicheroDatos);
             //LEERARCHIVO CON EL SEGUNDO      
+            String [] datos = leerArchivo(nomFicheroTexto);
             
 
-            
+            //Hacer un insertCompendium a los datos
+            IndexTree it = new IndexTree();
+            it.insertCompendium(com);
         }
 
     }
